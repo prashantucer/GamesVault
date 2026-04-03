@@ -1,8 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+    if (localStorage.getItem('color-theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      // Default to dark for GameVault (even if system is light)
+      document.documentElement.classList.add('dark');
+    }
+  </script>
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23000000%22 rx=%2220%22/><text x=%2235%22 y=%2265%22 font-family=%22Arial, sans-serif%22 font-weight=%22bold%22 font-size=%2245%22 fill=%22%23ffffff%22 text-anchor=%22middle%22>P.P</text><text x=%2275%22 y=%2265%22 font-family=%22Arial, sans-serif%22 font-weight=%22bold%22 font-size=%2245%22 fill=%22%23667eea%22 text-anchor=%22middle%22>.</text></svg>"
     type="image/svg+xml">
