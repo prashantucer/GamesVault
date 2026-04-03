@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, ShoppingCart, Sun, Moon, Compass, Rocket, Tag, Heart, LogIn } from 'lucide-react';
+import { Search, ShoppingCart, Sun, Moon, Compass, Rocket, Tag, Heart, LogIn, Home, Gamepad2 } from 'lucide-react';
 import { useThemeStore } from '../../store/themeStore';
 import { useCartStore } from '../../store/cartStore';
 import { useSearchStore } from '../../store/searchStore';
@@ -9,10 +9,11 @@ import { useWishlistStore } from '../../store/wishlistStore';
 import { useAuthStore } from '../../store/authStore';
 
 const navItems = [
+  { name: 'Home', path: '/', icon: Home },
   { name: 'Browse', path: '/browse', icon: Compass },
-  { name: 'New Releases', path: '/#new', icon: Rocket },
-  { name: 'Deals', path: '/deals', icon: Tag },
+  { name: 'Deals', path: '/#deals', icon: Tag },
 ];
+
 
 export const FloatingNav = () => {
   const { theme, toggleTheme } = useThemeStore();
@@ -32,11 +33,12 @@ export const FloatingNav = () => {
       <nav className="relative flex items-center justify-between px-6 py-3 bg-nav backdrop-blur-3xl border border-navBorder rounded-full shadow-lg dark:shadow-none transition-theme duration-300">
         
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-black font-bold font-display text-lg group-hover:scale-105 transition-transform">
-            V
+        <Link to="/" className="flex items-center gap-3 group" onClick={() => { if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+          <div className="relative w-10 h-10 flex items-center justify-center">
+            <div className="absolute inset-0 bg-accent rounded-xl rotate-12 group-hover:rotate-0 group-hover:scale-110 shadow-[0_0_15px_rgba(232,255,0,0.3)] group-hover:shadow-[0_0_25px_rgba(232,255,0,0.6)] transition-all duration-300 z-0"></div>
+            <Gamepad2 className="w-6 h-6 text-black relative z-10 drop-shadow-sm" strokeWidth={2.5} />
           </div>
-          <span className="font-display font-bold text-xl tracking-tight hidden sm:block">GameVault</span>
+          <span className="font-display font-black text-2xl tracking-tighter hidden sm:block">GameVault</span>
         </Link>
 
         {/* Desktop Links - Animated Logos */}
@@ -47,6 +49,11 @@ export const FloatingNav = () => {
               <Link
                 key={item.name}
                 to={item.path}
+                onClick={() => {
+                  if (item.path === '/' && location.pathname === '/') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
                 className="relative px-4 py-2 text-sm font-medium hover:text-accent transition-colors rounded-full flex flex-col items-center gap-1 group"
               >
                 {location.pathname === item.path && (

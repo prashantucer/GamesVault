@@ -3,10 +3,7 @@ import { create } from 'zustand';
 // Check if there's a saved theme in localStorage
 const getInitialTheme = () => {
   if (typeof window !== 'undefined' && window.localStorage) {
-    const storedPrefs = window.localStorage.getItem('color-theme');
-    if (typeof storedPrefs === 'string') {
-      return storedPrefs;
-    }
+    window.localStorage.setItem('color-theme', 'dark');
   }
   return 'dark'; // GameVault default is dark
 };

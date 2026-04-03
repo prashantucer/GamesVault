@@ -25,6 +25,18 @@ const LoadingFallback = () => (
 const Layout = () => {
   const location = useLocation();
 
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300); // Wait for page transition
+    }
+  }, [location.hash, location.pathname]);
+
   return (
     <div className="min-h-screen flex flex-col pt-24 pb-12 selection:bg-accent selection:text-black bg-background text-text overflow-x-hidden">
       <FloatingNav />
@@ -33,7 +45,11 @@ const Layout = () => {
       <SearchModal />
       <main className="flex-1 w-full max-w-7xl mx-auto px-6">
         <Suspense fallback={<LoadingFallback />}>
-          <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+          <AnimatePresence mode="wait" onExitComplete={() => {
+            if (!window.location.hash) {
+              window.scrollTo(0, 0);
+            }
+          }}>
             <motion.div
               key={location.pathname}
               initial={{ y: -50, opacity: 0 }}

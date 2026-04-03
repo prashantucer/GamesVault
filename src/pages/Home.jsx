@@ -155,7 +155,6 @@ export default function Home() {
                  <img src={cat.image} alt={cat.name} className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500" />
                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-                    <span className="text-4xl mb-2 filter drop-shadow-lg">{cat.icon}</span>
                     <h3 className="text-white font-display font-bold tracking-wider text-xl">{cat.name}</h3>
                  </div>
               </Link>
@@ -164,7 +163,7 @@ export default function Home() {
       </section>
 
       {/* Deals Section */}
-      <section className="bg-card -mx-6 px-6 py-16 rounded-3xl">
+      <section id="deals" className="bg-card -mx-6 px-6 py-16 rounded-3xl">
         <div className="flex flex-col md:flex-row gap-12 items-center text-center md:text-left mb-12">
            <div className="md:w-1/3 space-y-4">
              <div className="inline-flex items-center justify-center bg-red-500 text-white font-bold py-1 px-3 rounded-full animate-bounce mb-2">
