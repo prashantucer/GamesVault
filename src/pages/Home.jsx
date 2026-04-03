@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { getFeaturedGames, getNewReleases, getDeals, mockGames } from '../api/mockData';
 import { GameCard } from '../components/ui/GameCard';
@@ -60,9 +60,9 @@ export default function Home() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-5xl md:text-7xl font-display font-black text-white leading-tight mb-6"
+              className="text-5xl md:text-7xl font-display font-black text-white leading-tight mb-6 hover:text-accent transition-colors cursor-pointer"
             >
-              {heroGame.title}
+              <Link to={`/game/${heroGame.id}`}>{heroGame.title}</Link>
             </motion.h1>
             
             <motion.p 
@@ -78,6 +78,7 @@ export default function Home() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
+              className="flex flex-col sm:flex-row gap-4"
             >
               <Button 
                 variant="accent" 
@@ -90,6 +91,15 @@ export default function Home() {
                   : <><ShoppingCart className="w-5 h-5" /> Get Now — ₹{heroGame.price}</>
                 }
               </Button>
+              <Link to={`/game/${heroGame.id}`} className="w-full sm:w-auto">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="w-full font-bold text-lg bg-black/40 text-white border-white/20 hover:bg-white/10"
+                >
+                  View Details
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </motion.div>

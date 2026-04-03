@@ -17,7 +17,21 @@ export default function GameDetail() {
   const [activeTab, setActiveTab] = useState('about');
   const [shareCopied, setShareCopied] = useState(false);
 
+  // Mock comments/reviews for different games
+  const mockReviews = {
+    'g-1': { user: 'NightCityLegend', hours: 250, text: 'An incredible journey through a beautiful dystopia. After all the patches, this is a true masterpiece.' },
+    'g-2': { user: 'TarnishedOne', hours: 300, text: 'The scope of this game is mind-boggling. Best exploration in any game ever made.' },
+    'g-3': { user: 'SpaceExplorer', hours: 1500, text: 'The greatest comeback in gaming history. Endless planets and constant free updates.' },
+    'g-4': { user: 'SpeedDemon', hours: 85, text: 'Love the cell-shaded effects and the deep customization. The racing feels punchy and fun.' },
+    'g-5': { user: 'IsaacClarke', hours: 45, text: 'They kept what made the original great and elevated the horror tenfold. Incredible audio design.' },
+    'g-6': { user: 'VeteranMedic', hours: 210, text: 'It had a rough start, but it finally feels like a true Battlefield game now. Lots of chaotic fun.' },
+    'g-7': { user: 'SamuraiGhost', hours: 90, text: 'Visually gorgeous with combat that feels like a cinematic samurai movie. Highly immersive.' },
+    'g-8': { user: 'PyramidHead', hours: 30, text: 'A faithful and terrifying remake that captures the dread of the original perfectly.' }
+  };
+
   if (!game) return <div className="text-center py-32 text-2xl font-display font-bold">Game not found</div>;
+
+  const currentReview = mockReviews[game.id] || { user: 'GamerX_99', hours: 120, text: 'Absolutely stunning. Highly recommend picking this up!' };
 
   const inCart = items.some(i => i.id === game.id);
   const wishlisted = isWishlisted(game.id);
@@ -178,13 +192,13 @@ export default function GameDetail() {
                       <div className="flex gap-3">
                         <div className="w-10 h-10 bg-gradient-to-tr from-accent to-purple-500 rounded-full" />
                         <div>
-                          <p className="font-bold text-sm">GamerX_99</p>
-                          <p className="text-xs text-muted">120 hrs on record</p>
+                          <p className="font-bold text-sm">{currentReview.user}</p>
+                          <p className="text-xs text-muted">{currentReview.hours} hrs on record</p>
                         </div>
                       </div>
                       <div className="text-accent flex"><Star className="w-3 h-3 fill-current"/><Star className="w-3 h-3 fill-current"/><Star className="w-3 h-3 fill-current"/><Star className="w-3 h-3 fill-current"/><Star className="w-3 h-3 fill-current"/></div>
                     </div>
-                    <p className="text-sm text-muted">Absolutely stunning. The attention to detail in the world design is unmatched. Performance is smooth on my 3080. Highly recommend picking this up!</p>
+                    <p className="text-sm text-muted">{currentReview.text}</p>
                   </div>
                 </div>
               )}

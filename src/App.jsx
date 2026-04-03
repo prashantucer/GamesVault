@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FloatingNav } from './components/layout/FloatingNav';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { WishlistDrawer } from './components/ui/WishlistDrawer';
@@ -22,15 +23,27 @@ const LoadingFallback = () => (
 );
 
 const Layout = () => {
+  const location = useLocation();
+
   return (
-    <div className="min-h-screen flex flex-col pt-24 pb-12 selection:bg-accent selection:text-black bg-background text-text">
+    <div className="min-h-screen flex flex-col pt-24 pb-12 selection:bg-accent selection:text-black bg-background text-text overflow-x-hidden">
       <FloatingNav />
       <CartDrawer />
       <WishlistDrawer />
       <SearchModal />
       <main className="flex-1 w-full max-w-7xl mx-auto px-6">
         <Suspense fallback={<LoadingFallback />}>
-          <Outlet />
+          <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+            <motion.div
+              key={location.pathname}
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </Suspense>
       </main>
 
