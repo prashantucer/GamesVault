@@ -108,6 +108,14 @@ export default function Checkout() {
   const [paymentId, setPaymentId] = useState('');
   const [step, setStep] = useState(1);
   const [razorpayReady, setRazorpayReady] = useState(false);
+  const [selectedMethod, setSelectedMethod] = useState('card');
+  const [copied, setCopied] = useState('');
+
+  const copyToClipboard = (text, label) => {
+    navigator.clipboard.writeText(text);
+    setCopied(label);
+    setTimeout(() => setCopied(''), 2000);
+  };
 
   const subtotal = items.reduce((s, i) => s + (i.salePrice ?? i.price), 0);
   const gst = Math.round(subtotal * 0.18);
@@ -309,22 +317,86 @@ export default function Checkout() {
                   </span>
                 </h2>
 
-                {/* Razorpay payment methods info */}
+                {/* Clickable payment method cards */}
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { icon: '💳', label: 'Credit / Debit Card', sub: 'Visa, Mastercard, RuPay' },
-                    { icon: '📱', label: 'UPI', sub: 'PhonePe, GPay, Paytm' },
-                    { icon: '🏦', label: 'Net Banking', sub: 'All major banks' },
-                    { icon: '👛', label: 'Wallets', sub: 'Paytm, Mobikwik & more' },
-                  ].map(({ icon, label, sub }) => (
-                    <div key={label} className="bg-card border border-navBorder rounded-2xl p-3.5 flex items-start gap-3">
+                    { id: 'card',    icon: '💳', label: 'Credit / Debit Card', sub: 'Visa, Mastercard, RuPay' },
+                    { id: 'upi',     icon: '📱', label: 'UPI',                 sub: 'PhonePe, GPay, Paytm' },
+                    { id: 'netbank', icon: '🏦', label: 'Net Banking',         sub: 'All major banks' },
+                    { id: 'wallet',  icon: '👛', label: 'Wallets',             sub: 'Paytm, Mobikwik & more' },
+                  ].map(({ id, icon, label, sub }) => (
+                    <button
+                      key={id}
+                      onClick={() => setSelectedMethod(id)}
+                      className={`bg-card border rounded-2xl p-3.5 flex items-start gap-3 text-left transition-all duration-200 hover:scale-[1.02] ${
+                        selectedMethod === id
+                          ? 'border-accent shadow-[0_0_12px_rgba(232,255,0,0.2)] bg-accent/5'
+                          : 'border-navBorder hover:border-accent/40'
+                      }`}
+                    >
                       <span className="text-xl">{icon}</span>
                       <div>
-                        <p className="text-sm font-bold">{label}</p>
+                        <p className={`text-sm font-bold ${selectedMethod === id ? 'text-accent' : ''}`}>{label}</p>
                         <p className="text-xs text-muted">{sub}</p>
                       </div>
-                    </div>
+                      {selectedMethod === id && (
+                        <span className="ml-auto w-4 h-4 rounded-full bg-accent flex items-center justify-center shrink-0 mt-0.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-black" />
+                        </span>
+                      )}
+                    </button>
                   ))}
+                </div>
+
+                {/* Test credentials panel — changes based on selected method */}
+                <div className="bg-black/30 border border-accent/20 rounded-2xl p-4 space-y-3">
+                  <p className="text-xs font-bold text-accent uppercase tracking-wider">🧪 Test Mode Credentials</p>
+
+                  {selectedMethod === 'card' && (
+                    <div className="space-y-2">
+                      {[
+                        { label: 'Card Number', value: '4100 2800 0000 1007' },
+                        { label: 'Expiry', value: '12/26' },
+                        { label: 'CVV', value: '123' },
+                      ].map(({ label, value }) => (
+                        <div key={label} className="flex items-center justify-between">
+                          <span className="text-xs text-muted">{label}</span>
+                          <div className="flex items-center gap-2">
+                            <code className="text-xs font-mono text-text bg-card px-2 py-1 rounded-lg">{value}</code>
+                            <button
+                              onClick={() => copyToClipboard(value.replace(/\s/g, ''), label)}
+                              className="text-[10px] px-2 py-1 rounded-lg border border-accent/30 text-accent hover:bg-accent/10 transition-colors"
+                            >
+                              {copied === label ? '✅ Copied!' : 'Copy'}
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {selectedMethod === 'upi' && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-muted">UPI ID</span>
+                      <div className="flex items-center gap-2">
+                        <code className="text-xs font-mono text-text bg-card px-2 py-1 rounded-lg">success@razorpay</code>
+                        <button
+                          onClick={() => copyToClipboard('success@razorpay', 'upi')}
+                          className="text-[10px] px-2 py-1 rounded-lg border border-accent/30 text-accent hover:bg-accent/10 transition-colors"
+                        >
+                          {copied === 'upi' ? '✅ Copied!' : 'Copy'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedMethod === 'netbank' && (
+                    <p className="text-xs text-muted">Select any bank in Razorpay → on the mock bank page, click the <span className="text-accent font-bold">"Success"</span> button.</p>
+                  )}
+
+                  {selectedMethod === 'wallet' && (
+                    <p className="text-xs text-muted">Select any wallet in Razorpay → enter any mobile number → click <span className="text-accent font-bold">"Pay"</span> to simulate success.</p>
+                  )}
                 </div>
 
                 {/* Razorpay branding */}
@@ -357,11 +429,6 @@ export default function Checkout() {
                     <><Smartphone className="w-4 h-4" /> Pay &#x20B9;{total.toLocaleString('en-IN')} via Razorpay</>
                   )}
                 </Button>
-
-                <p className="text-center text-xs text-muted">
-                  Running in <span className="text-accent font-bold">Test Mode</span> — use Razorpay test card{' '}
-                  <code className="bg-card px-1.5 py-0.5 rounded text-text font-mono">4111 1111 1111 1111</code> with any CVV & future date.
-                </p>
               </motion.div>
             )}
           </AnimatePresence>

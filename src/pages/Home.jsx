@@ -31,12 +31,38 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-32 pb-32">
       {/* Hero Section */}
-      <section className="relative h-[85vh] -mx-6 -mt-24 rounded-b-[3rem] overflow-hidden bg-black flex items-end pb-24 group">
-        <motion.div style={{ y: heroY }} className="absolute inset-0 w-full h-full">
-          <img src={heroGame.cover} alt="Hero" className="w-full h-full object-cover opacity-70 scale-105 group-hover:scale-110 transition-transform duration-[10s] ease-out" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-          <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxmaWx0ZXIgaWQ9Im4iPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSI1IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+')] mix-blend-overlay pointer-events-none" />
-        </motion.div>
+      <section className="relative h-[85vh] -mx-6 -mt-24 rounded-b-[3rem] overflow-hidden bg-black flex items-end pb-24">
+        {/* ── YouTube Video Background ── */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <iframe
+            src="https://www.youtube.com/embed/8X2kIfS6fb8?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playlist=8X2kIfS6fb8&vq=hd1080&iv_load_policy=3&disablekb=1&fs=0"
+            allow="autoplay; encrypted-media; gyroscope"
+            title="Cyberpunk 2077"
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '177.78vh',
+              minWidth: '100%',
+              height: '56.25vw',
+              minHeight: '100%',
+              transform: 'translate(-50%, -50%)',
+              pointerEvents: 'none',
+              opacity: 0.75,
+              border: 'none',
+            }}
+          />
+          {/* Gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent pointer-events-none" />
+          {/* Cyberpunk scan-line overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.04] mix-blend-overlay"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 3px)',
+            }}
+          />
+        </div>
 
         <motion.div 
           style={{ opacity: heroOpacity }}
