@@ -9,6 +9,11 @@ import {
   CheckCircle2, ArrowLeft, Shield, Zap, AlertCircle, Smartphone
 } from 'lucide-react';
 
+// ── Backend API URL ────────────────────────────────────────────────
+// Uses Render URL in production, localhost in local dev
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+
 // ── Load Razorpay SDK script dynamically ──────────────────────────
 const loadRazorpay = () =>
   new Promise((resolve) => {
@@ -128,7 +133,7 @@ export default function Checkout() {
 
     try {
       // Step 1: Create order on your backend
-      const orderRes = await fetch('/api/create-order', {
+      const orderRes = await fetch(`${API_BASE}/api/create-order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: totalInPaise }),
@@ -168,7 +173,7 @@ export default function Checkout() {
         handler: async (response) => {
           // Step 3: Verify on backend
           try {
-            const verifyRes = await fetch('/api/verify-payment', {
+            const verifyRes = await fetch(`${API_BASE}/api/verify-payment`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
