@@ -5,6 +5,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "build": "echo 'No build step needed for Express server'",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
