@@ -1,15 +1,18 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Heart } from 'lucide-react';
 import { useCartStore } from '../../store/cartStore';
+import { useWishlistStore } from '../../store/wishlistStore';
 
 export const GameCard = ({ game, variant = 'vertical' }) => {
   const { addItem, items } = useCartStore();
+  const { addItem: addWish, removeItem: removeWish, items: wishItems } = useWishlistStore();
   const navigate = useNavigate();
   const [isNavigating, setIsNavigating] = useState(false);
   
-  const inCart = items.some(i => i.id === game.id);
+  const inCart    = items.some(i => i.id === game.id);
+  const inWish    = wishItems.some(i => i.id === game.id);
 
   const handleNavigate = (e) => {
     e.preventDefault();
@@ -17,6 +20,19 @@ export const GameCard = ({ game, variant = 'vertical' }) => {
     setTimeout(() => {
       navigate(`/game/${game.id}`);
     }, 100);
+  };
+
+  const handleAddToCart = (e) => {
+    // ✅ Stop bubbling so the parent <a> link doesn't navigate
+    e.stopPropagation();
+    e.preventDefault();
+    addItem(game);
+  };
+
+  const handleToggleWish = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    inWish ? removeWish(game.id) : addWish(game);
   };
 
   if (variant === 'horizontal') {
@@ -35,7 +51,7 @@ export const GameCard = ({ game, variant = 'vertical' }) => {
             </span>
           )}
         </div>
-        <div className="py-2 flex flex-col justify-between">
+        <div className="py-2 flex flex-col justify-between flex-1">
           <div>
             <h3 className="font-display font-bold text-lg text-text group-hover:text-accent transition-colors">{game.title}</h3>
             <p className="text-sm text-muted line-clamp-2 mt-1">{game.desc}</p>
@@ -51,13 +67,21 @@ export const GameCard = ({ game, variant = 'vertical' }) => {
                 <span className="font-bold">₹{game.price}</span>
               )}
             </div>
+            {/* Wishlist in horizontal variant */}
+            <button
+              onClick={handleToggleWish}
+              className={`p-1.5 rounded-full transition-colors ${inWish ? 'text-red-500' : 'text-muted hover:text-red-400'}`}
+              title={inWish ? 'Remove from Wishlist' : 'Add to Wishlist'}
+            >
+              <Heart className="w-4 h-4" fill={inWish ? 'currentColor' : 'none'} />
+            </button>
           </div>
         </div>
       </motion.a>
     );
   }
 
-  // vertical
+  // ── Vertical card ──────────────────────────────────────────────────
   return (
     <motion.div 
       animate={isNavigating ? { scale: 0.9, opacity: 0.5 } : { scale: 1, opacity: 1 }}
@@ -87,20 +111,30 @@ export const GameCard = ({ game, variant = 'vertical' }) => {
           )}
         </div>
 
+        {/* ── Wishlist icon (top-right corner) ── */}
+        <button
+          onClick={handleToggleWish}
+          className={`absolute top-3 right-3 w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-200 z-10
+            ${inWish
+              ? 'bg-red-500/90 text-white scale-110'
+              : 'bg-black/50 text-white/70 opacity-0 group-hover:opacity-100 hover:bg-red-500/80 hover:text-white hover:scale-110'
+            }`}
+          title={inWish ? 'Remove from Wishlist' : 'Add to Wishlist'}
+        >
+          <Heart className="w-4 h-4" fill={inWish ? 'currentColor' : 'none'} />
+        </button>
+
         {/* Hover Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        {/* Quick Add Button */}
+        {/* Quick Add to Cart Button */}
         <div className="absolute bottom-4 left-0 w-full px-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-           <button
-            onClick={(e) => {
-              e.preventDefault();
-              addItem(game);
-            }}
+          <button
+            onClick={handleAddToCart}
             disabled={inCart}
             className="w-full py-3 bg-white/10 hover:bg-accent hover:text-black backdrop-blur-md border border-white/20 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:bg-white/5 flex items-center justify-center gap-2"
           >
-            {inCart ? 'In Cart' : <><ShoppingCart className="w-4 h-4" /> Add to Cart</>}
+            {inCart ? '✓ In Cart' : <><ShoppingCart className="w-4 h-4" /> Add to Cart</>}
           </button>
         </div>
       </a>
