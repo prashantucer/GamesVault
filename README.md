@@ -169,9 +169,9 @@ GamesVault/
 - [ ] Razorpay Live Mode
 - [ ] Order history with MongoDB
 - [ ] User profiles
-- [ ] Game reviews & ratings
+- [x] Game reviews & ratings
 - [ ] Admin dashboard
-- [ ] Post-payment email confirmation
+- [x] Post-payment email confirmation
 
 ---
 
