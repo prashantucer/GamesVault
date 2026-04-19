@@ -43,7 +43,7 @@ const Layout = () => {
       <CartDrawer />
       <WishlistDrawer />
       <SearchModal />
-      <main className="flex-1 w-full max-w-7xl mx-auto px-6">
+      <main className="flex-1 w-full px-6">
         <Suspense fallback={<LoadingFallback />}>
           <AnimatePresence mode="wait" onExitComplete={() => {
             if (!window.location.hash) {

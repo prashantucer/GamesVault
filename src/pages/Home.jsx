@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-32 pb-32">
       {/* Hero Section */}
-      <section className="relative h-[85vh] -mx-6 -mt-24 rounded-b-[3rem] overflow-hidden bg-black flex items-end pb-24">
+      <section className="relative h-screen dark:h-[85vh] -mx-6 -mt-24 rounded-none dark:rounded-b-[3rem] overflow-hidden bg-black flex items-end pb-24">
         {/* ── YouTube Video Background ── */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <iframe
@@ -66,7 +66,7 @@ export default function Home() {
 
         <motion.div 
           style={{ opacity: heroOpacity }}
-          className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-end gap-8"
+          className="relative z-10 w-full px-6 lg:px-12 flex flex-col md:flex-row justify-between items-end gap-8"
         >
           <div className="max-w-2xl">
             <motion.div 
@@ -159,7 +159,7 @@ export default function Home() {
                   <h3 className="text-3xl font-display font-bold text-white mb-2">{newReleases[0].title}</h3>
                </div>
                <Link to={`/game/${newReleases[0].id}`}>
-                  <Button variant="accent">Buy ${newReleases[0].price}</Button>
+                  <Button variant="accent">Buy ₹{newReleases[0].price}</Button>
                </Link>
              </div>
            </div>
