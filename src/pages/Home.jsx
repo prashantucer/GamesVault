@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-32 pb-32">
       {/* Hero Section */}
-      <section className="relative h-screen dark:h-[85vh] -mx-6 -mt-24 rounded-none dark:rounded-b-[3rem] overflow-hidden bg-black flex items-end pb-24">
+      <section className="relative h-screen -mx-6 -mt-24 overflow-hidden bg-black flex items-end pb-24">
         {/* ── YouTube Video Background ── */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <iframe
